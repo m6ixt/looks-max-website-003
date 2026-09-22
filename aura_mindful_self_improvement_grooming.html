@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura — Mindful Grooming & Self-Improvement</title>
+  
+  <!-- Fonts: Plus Jakarta Sans & Inter for clean modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Tailwind Configuration for custom soft palette & shadows -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            aura: {
+              50: '#F8FAFC',
+              100: '#F0F5FA',
+              200: '#E1EBF5',
+              300: '#C7DAED',
+              400: '#94BBE2',
+              500: '#5F99D4',
+              teal: '#E8F5F5',
+              'teal-dark': '#0E7490',
+              lavender: '#F3F0F9',
+              'lavender-dark': '#6D28D9',
+              slate: '#334155',
+              muted: '#64748B',
+            }
+          },
+          boxShadow: {
+            'soft-sm': '0 4px 20px -2px rgba(148, 163, 184, 0.15)',
+            'soft': '0 12px 32px -4px rgba(148, 163, 184, 0.18)',
+            'soft-lg': '0 20px 45px -8px rgba(148, 163, 184, 0.22)',
+            'soft-inner': 'inset 0 2px 4px 0 rgba(148, 163, 184, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom styles for gentle glassmorphism and subtle animations -->
+  <style>
+    body {
+      background-color: #F8FAFC;
+      color: #1E293B;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .soft-gradient-bg {
+      background: linear-gradient(135deg, #F0F5FA 0%, #F5F3FF 50%, #EDF8F8 100%);
+    }
+    .btn-gradient {
+      background: linear-gradient(135deg, #60A5FA 0%, #818CF8 50%, #A78BFA 100%);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-gradient:hover {
+      opacity: 0.94;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.4);
+    }
+    .subtle-ring {
+      transition: all 0.2s ease-in-out;
+    }
+    .subtle-ring:hover {
+      box-shadow: 0 14px 30px -8px rgba(148, 163, 184, 0.24);
+      transform: translateY(-2px);
+    }
+    /* Custom toast animation */
+    @keyframes toastFade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .toast-animate {
+      animation: toastFade 0.25s ease-out forwards;
+    }
+  </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-sans selection:bg-indigo-100 selection:text-indigo-900">
+
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-40 w-full glass-card border-b border-slate-200/70 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-3">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-2.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 via-teal-400 to-indigo-400 flex items-center justify-center text-white shadow-sm shadow-sky-200 group-hover:scale-105 transition-transform duration-300">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-800 via-sky-900 to-slate-700 bg-clip-text text-transparent">Aura</span>
+          <span class="block text-[10px] uppercase font-semibold tracking-wider text-teal-600 -mt-1">Mindful Elevation</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600">
+        <a href="#philosophy" class="hover:text-sky-600 transition-colors">Philosophy</a>
+        <a href="#categories" class="hover:text-sky-600 transition-colors">Pillars</a>
+        <a href="#builder" class="hover:text-sky-600 transition-colors">Routine Builder</a>
+        <a href="#guides" class="hover:text-sky-600 transition-colors">Library & Guides</a>
+        <a href="#stories" class="hover:text-sky-600 transition-colors">Journeys</a>
+      </nav>
+
+      <!-- Action Items & Mobile Menu Trigger -->
+      <div class="flex items-center gap-3">
+        <!-- Interactive Routine Drawer Trigger -->
+        <button onclick="toggleRoutineDrawer()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full bg-aura-100 text-sky-800 border border-sky-200/70 hover:bg-sky-100 transition-all duration-200">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-sky-600"></i>
+          <span>Today's Habits</span>
+          <span id="navHabitBadge" class="bg-sky-600 text-white rounded-full text-[10px] px-1.5 py-0.2">0/4</span>
+        </button>
+
+        <a href="#builder" class="btn-gradient text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-sm">
+          Build Routine
+        </a>
+
+        <!-- Mobile burger -->
+        <button onclick="toggleMobileMenu()" aria-label="Toggle mobile menu" class="md:hidden p-2 text-slate-600 hover:text-slate-900 focus:outline-none">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Navigation -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-md px-5 py-4 space-y-3">
+      <a href="#philosophy" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 py-1">Philosophy</a>
+      <a href="#categories" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 py-1">Pillars</a>
+      <a href="#builder" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 py-1">Routine Builder</a>
+      <a href="#guides" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 py-1">Library & Guides</a>
+      <a href="#stories" onclick="toggleMobileMenu()" class="block text-sm font-medium text-slate-700 py-1">Stories</a>
+      <button onclick="toggleRoutineDrawer(); toggleMobileMenu();" class="w-full text-left text-sm font-medium text-sky-700 py-2 flex items-center justify-between">
+        <span>Today's Habit Checklist</span>
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-grow">
+    <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden soft-gradient-bg border-b border-slate-200/60">
+      <!-- Soft ambient background blurs -->
+      <div class="absolute -top-32 -left-20 w-80 h-80 rounded-full bg-teal-200/40 blur-3xl pointer-events-none"></div>
+      <div class="absolute top-10 right-0 w-96 h-96 rounded-full bg-purple-200/35 blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Hero Text Content -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-sky-200/80 text-sky-800 text-xs font-semibold shadow-soft-sm tracking-wide">
+              <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
+              Intentional & Non-Toxic Self-Improvement
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+              Evolve with intention. <br class="hidden sm:inline">
+              <span class="bg-gradient-to-r from-sky-600 via-teal-600 to-indigo-600 bg-clip-text text-transparent">Glow through habit.</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              No hyper-critical ratings or toxic pseudo-science. Aura provides gentle, evidence-based habits for skincare, posture, grooming, and poise — designed to build natural self-assurance from within.
+            </p>
+
+            <!-- Hero Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+              <a href="#builder" class="w-full sm:w-auto btn-gradient text-white font-semibold px-7 py-3.5 rounded-full text-center shadow-soft flex items-center justify-center gap-2.5 group text-sm">
+                <span>Personalize Your Routine</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+              </a>
+              <a href="#guides" class="w-full sm:w-auto px-6 py-3.5 rounded-full text-slate-700 bg-white hover:bg-slate-50 border border-slate-200/90 font-medium text-sm text-center shadow-soft-sm transition-all">
+                Explore Core Protocols
+              </a>
+            </div>
+
+            <!-- Trust / Philosophy Metrics -->
+            <div class="pt-6 border-t border-slate-200/70 grid grid-cols-3 gap-4 max-w-md mx-auto lg:mx-0 text-left">
+              <div>
+                <div class="text-2xl font-bold text-slate-800">100%</div>
+                <div class="text-xs text-slate-500 font-medium">Science & Barrier Safe</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-slate-800">0%</div>
+                <div class="text-xs text-slate-500 font-medium">Toxicity or Insecurity</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-slate-800">5-Min</div>
+                <div class="text-xs text-slate-500 font-medium">Sustainable Daily Rituals</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Right Preview Card / Interactive Soft Widget -->
+          <div class="lg:col-span-5">
+            <div class="relative mx-auto max-w-md">
+              <div class="glass-card rounded-3xl p-6 shadow-soft border border-white/90 relative">
+                
+                <!-- Card Header -->
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-sky-100 flex items-center justify-center text-sky-700">
+                      <i data-lucide="sun" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h4 class="text-sm font-semibold text-slate-800">Morning Alignment</h4>
+                      <p class="text-[11px] text-slate-400">Gentle physical & mental reboot</p>
+                    </div>
+                  </div>
+                  <span class="text-xs font-semibold px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full border border-teal-200/70">
+                    Phase 1
+                  </span>
+                </div>
+
+                <!-- Quick Checkable Habit Demonstration -->
+                <div class="space-y-3" id="heroHabitList">
+                  <label class="flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-100 shadow-sm cursor-pointer hover:border-sky-200 transition-all">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" checked class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-400" onchange="updateHeroProgress()">
+                      <span class="text-xs font-medium text-slate-700">500ml Water + Electrolytes</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400">Hydration</span>
+                  </label>
+
+                  <label class="flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-100 shadow-sm cursor-pointer hover:border-sky-200 transition-all">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" checked class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-400" onchange="updateHeroProgress()">
+                      <span class="text-xs font-medium text-slate-700">Gentle Cleanser & Broad SPF 50</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400">Barrier Care</span>
+                  </label>
+
+                  <label class="flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-100 shadow-sm cursor-pointer hover:border-sky-200 transition-all">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-400" onchange="updateHeroProgress()">
+                      <span class="text-xs font-medium text-slate-700">Wall Angel Posture Reset (2m)</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400">Alignment</span>
+                  </label>
+
+                  <label class="flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-100 shadow-sm cursor-pointer hover:border-sky-200 transition-all">
+                    <div class="flex items-center gap-3">
+                      <input type="checkbox" class="w-4 h-4 text-sky-600 rounded border-slate-300 focus:ring-sky-400" onchange="updateHeroProgress()">
+                      <span class="text-xs font-medium text-slate-700">Somatic Shoulder Unclench</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400">Poise</span>
+                  </label>
+                </div>
+
+                <!-- Daily Progress Bar -->
+                <div class="mt-5 pt-4 border-t border-slate-100">
+                  <div class="flex items-center justify-between text-xs font-medium mb-1.5">
+                    <span class="text-slate-600">Daily Aura Balance</span>
+                    <span id="heroProgressPercent" class="text-sky-700 font-bold">50%</span>
+                  </div>
+                  <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                    <div id="heroProgressBar" class="h-full bg-gradient-to-r from-teal-400 to-sky-500 rounded-full transition-all duration-300" style="width: 50%;"></div>
+                  </div>
+                </div>
+
+                <div class="mt-4 p-3 rounded-xl bg-indigo-50/70 border border-indigo-100 flex items-center gap-3">
+                  <i data-lucide="heart-handshake" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+                  <p class="text-[11px] text-indigo-900 leading-snug">
+                    <span class="font-semibold">Gentle reminder:</span> Consistency over extremes. Physical presence begins with calm self-respect.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Philosophy & Ground Rules -->
+    <section id="philosophy" class="py-16 bg-white border-b border-slate-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-teal-600 mb-2">Our Philosophy</h2>
+          <h3 class="text-3xl font-bold text-slate-900 tracking-tight">The Anti-Toxicity Looksmaxing Standard</h3>
+          <p class="mt-3 text-slate-600 text-sm sm:text-base">We reject harmful facial bone measurement obsessions and neurotic insecurity bait. Real radiance is built on health, grooming precision, and authentic ease.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 subtle-ring">
+            <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center mb-4">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-800 mb-2">Skin Barrier Health First</h4>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              No 12-step aggressive chemical burning. We emphasize gentle barrier hydration, sun protection, and balanced cellular renewal for a natural glow.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 subtle-ring">
+            <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4">
+              <i data-lucide="activity" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-800 mb-2">Postural Poise & Kinetic Ease</h4>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Real presence comes from how you occupy space. We target cervical spine alignment, relaxed traps, grounded breath, and calm confident gaze.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 subtle-ring">
+            <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-4">
+              <i data-lucide="smile" class="w-6 h-6"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-800 mb-2">Scent, Hair & Clean Silhouettes</h4>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Sartorial fit, tailored hair profiles, nail hygiene, and signature natural scents give an immediate 80% leap in everyday refinement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The 5 Core Categories -->
+    <section id="categories" class="py-16 md:py-20 bg-aura-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+          <div>
+            <h2 class="text-xs font-bold uppercase tracking-wider text-sky-600 mb-2">Pillars of Elevation</h2>
+            <h3 class="text-3xl font-bold text-slate-900 tracking-tight">Holistic Growth Dimensions</h3>
+          </div>
+          <p class="text-sm text-slate-500 max-w-md">
+            Tap into actionable, non-clinical lifestyle pillars to refine how you look, feel, and project yourself.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Card 1: Skincare -->
+          <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-sky-100/90 text-sky-700 flex items-center justify-center">
+                  <i data-lucide="droplet" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-semibold px-3 py-1 rounded-full bg-sky-50 text-sky-700 border border-sky-200/60">Complexion</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-800 mb-2">Dermal Glow & Skin Health</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Master moisture cycling, ceramides, SPF defense, and gua sha lymphatic drainage without harsh drying peel treatments.
+              </p>
+              <ul class="text-xs text-slate-500 space-y-1.5 mb-6">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-500"></i> Lipid barrier reconstruction</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-500"></i> Periorbital puffiness reduction</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-500"></i> Evening tretinoin/retinol pacing</li>
+              </ul>
+            </div>
+            <button onclick="quickFilterGuides('skincare')" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-sky-50 text-sky-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              Browse Skincare Protocols <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Card 2: Posture & Alignment -->
+          <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-teal-100/90 text-teal-700 flex items-center justify-center">
+                  <i data-lucide="compass" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-semibold px-3 py-1 rounded-full bg-teal-50 text-teal-700 border border-teal-200/60">Presence</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-800 mb-2">Posture, Jawline & Poise</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Correct forward-head slouch, open ribcage breathing, and align tongue posture naturally to lift facial contours and exude calm stature.
+              </p>
+              <ul class="text-xs text-slate-500 space-y-1.5 mb-6">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-500"></i> Thoracic spine mobility drills</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-500"></i> Proper nasal breathing benefits</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-teal-500"></i> Grounded, unclenched stride</li>
+              </ul>
+            </div>
+            <button onclick="quickFilterGuides('posture')" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-teal-50 text-teal-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              Browse Posture Drills <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Card 3: Hair & Grooming -->
+          <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-purple-100/90 text-purple-700 flex items-center justify-center">
+                  <i data-lucide="scissors" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-semibold px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200/60">Detailing</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-800 mb-2">Hair, Scalp & Facial Grooming</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                From scalp micro-circulation to brow shaping and tailored beard density, refine the framing elements of your face.
+              </p>
+              <ul class="text-xs text-slate-500 space-y-1.5 mb-6">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-500"></i> Face shape haircuts harmonizing</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-500"></i> Rosemary oil & scalp stimulation</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-purple-500"></i> Clean neckline and eyebrow grooming</li>
+              </ul>
+            </div>
+            <button onclick="quickFilterGuides('grooming')" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-purple-50 text-purple-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              Browse Grooming Guides <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Card 4: Physique & Clean Nutrition -->
+          <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-blue-100/90 text-blue-700 flex items-center justify-center">
+                  <i data-lucide="flame" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-semibold px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/60">Vigor</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-800 mb-2">Lean Definition & S-Tier Health</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Achieve a healthy athletic V-taper frame, reduce facial sodium bloating, and enhance restful REM sleep for vibrant, alert eyes.
+              </p>
+              <ul class="text-xs text-slate-500 space-y-1.5 mb-6">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-500"></i> Sodium-potassium balance for face de-puff</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-500"></i> Lateral deltoid & back development</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-blue-500"></i> Circadian rhythm sleep optimization</li>
+              </ul>
+            </div>
+            <button onclick="quickFilterGuides('physique')" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-blue-50 text-blue-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              Browse Fitness Tips <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Card 5: Signature Style & Scent -->
+          <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-slate-200/80 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-100/90 text-indigo-700 flex items-center justify-center">
+                  <i data-lucide="shirt" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-semibold px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60">Aesthetic</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-800 mb-2">Wardrobe Proportion & Scent</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                Timeless color palettes, shoulder-seam mastery, shoe care, and finding an understated fragrance that lingers intimately without overpowering.
+              </p>
+              <ul class="text-xs text-slate-500 space-y-1.5 mb-6">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500"></i> The monochrome & muted rule</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500"></i> Fragrance pulse point strategy</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-indigo-500"></i> Footwear cleanliness & leather care</li>
+              </ul>
+            </div>
+            <button onclick="quickFilterGuides('style')" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-indigo-50 text-indigo-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              Browse Style Blueprint <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Card 6: Internal Grounding & Confidence -->
+          <div class="glass-card rounded-3xl p-6 shadow-soft hover:shadow-soft-lg transition-all duration-300 border border-slate-200/80 flex flex-col justify-between bg-gradient-to-br from-white/90 to-teal-50/40">
+            <div>
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100/90 text-emerald-700 flex items-center justify-center">
+                  <i data-lucide="zap" class="w-6 h-6"></i>
+                </div>
+                <span class="text-[11px] font-semibold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60">Mindset</span>
+              </div>
+              <h4 class="text-xl font-bold text-slate-800 mb-2">Unshakable Quiet Self-Assurance</h4>
+              <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                The most attractive trait is psychological safety in your own skin: vocal resonance, eye contact softness, active listening, and somatic peace.
+              </p>
+              <ul class="text-xs text-slate-500 space-y-1.5 mb-6">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i> Diaphragmatic vocal pacing</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i> Letting go of fidgeting & social pacing</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i> Warm, non-predatory eye contact</li>
+              </ul>
+            </div>
+            <button onclick="quickFilterGuides('confidence')" class="w-full py-2.5 rounded-2xl bg-slate-100 hover:bg-emerald-50 text-emerald-700 font-semibold text-xs transition-colors flex items-center justify-center gap-2">
+              Browse Mindset Drills <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Routine Builder Tool -->
+    <section id="builder" class="py-16 md:py-24 bg-white border-y border-slate-200/60 relative">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        
+        <div class="text-center mb-10">
+          <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3.5 py-1.5 rounded-full border border-indigo-100">
+            Interactive Generator
+          </span>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-4 tracking-tight">
+            Craft Your Custom Daily Protocol
+          </h3>
+          <p class="text-slate-600 text-sm sm:text-base mt-2 max-w-xl mx-auto">
+            Select your personal focus areas and daily availability to receive an instant, healthy, and non-overwhelming checklist.
+          </p>
+        </div>
+
+        <div class="glass-card p-6 sm:p-8 rounded-3xl shadow-soft border border-slate-200">
+          
+          <!-- Step 1: Select Main Goals -->
+          <div class="mb-8">
+            <label class="block text-sm font-bold text-slate-800 mb-3">
+              1. What do you want to elevate this month? (Pick up to 3)
+            </label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="goalOptions">
+              <button type="button" onclick="toggleOption(this, 'skin')" class="goal-btn p-3.5 rounded-2xl border text-left flex flex-col gap-1 transition-all bg-sky-50/60 border-sky-300 text-sky-900 font-semibold" data-goal="skin">
+                <i data-lucide="droplet" class="w-5 h-5 text-sky-600"></i>
+                <span class="text-xs font-medium mt-1">Clear Skin Glow</span>
+              </button>
+
+              <button type="button" onclick="toggleOption(this, 'posture')" class="goal-btn p-3.5 rounded-2xl border text-left flex flex-col gap-1 transition-all bg-white border-slate-200 text-slate-700" data-goal="posture">
+                <i data-lucide="sparkles" class="w-5 h-5 text-teal-600"></i>
+                <span class="text-xs font-medium mt-1">Posture & Neck</span>
+              </button>
+
+              <button type="button" onclick="toggleOption(this, 'hair')" class="goal-btn p-3.5 rounded-2xl border text-left flex flex-col gap-1 transition-all bg-white border-slate-200 text-slate-700" data-goal="hair">
+                <i data-lucide="scissors" class="w-5 h-5 text-purple-600"></i>
+                <span class="text-xs font-medium mt-1">Hair & Beard</span>
+              </button>
+
+              <button type="button" onclick="toggleOption(this, 'depuff')" class="goal-btn p-3.5 rounded-2xl border text-left flex flex-col gap-1 transition-all bg-white border-slate-200 text-slate-700" data-goal="depuff">
+                <i data-lucide="moon" class="w-5 h-5 text-indigo-600"></i>
+                <span class="text-xs font-medium mt-1">Facial De-Puff</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Time Commitment -->
+          <div class="mb-8">
+            <label class="block text-sm font-bold text-slate-800 mb-3">
+              2. How much time can you comfortably commit daily?
+            </label>
+            <div class="grid grid-cols-3 gap-3">
+              <label class="cursor-pointer">
+                <input type="radio" name="timeCommitment" value="5" checked class="peer sr-only">
+                <div class="p-3.5 rounded-2xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 text-center transition-all">
+                  <div class="text-sm font-bold text-slate-800">5 Mins</div>
+                  <div class="text-[11px] text-slate-500">Micro-habits</div>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="timeCommitment" value="15" class="peer sr-only">
+                <div class="p-3.5 rounded-2xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 text-center transition-all">
+                  <div class="text-sm font-bold text-slate-800">15 Mins</div>
+                  <div class="text-[11px] text-slate-500">Balanced flow</div>
+                </div>
+              </label>
+
+              <label class="cursor-pointer">
+                <input type="radio" name="timeCommitment" value="30" class="peer sr-only">
+                <div class="p-3.5 rounded-2xl border border-slate-200 peer-checked:border-sky-500 peer-checked:bg-sky-50 text-center transition-all">
+                  <div class="text-sm font-bold text-slate-800">30 Mins</div>
+                  <div class="text-[11px] text-slate-500">Deep ritual</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Generate Button -->
+          <div class="flex justify-center">
+            <button onclick="generateCustomRoutine()" class="btn-gradient text-white px-8 py-3 rounded-full font-semibold text-sm shadow-soft flex items-center gap-2">
+              <i data-lucide="wand-2" class="w-4 h-4"></i>
+              <span>Generate My Tailored Protocol</span>
+            </button>
+          </div>
+
+          <!-- Generated Results Box (Revealed upon generation) -->
+          <div id="generatedRoutineBox" class="mt-8 pt-8 border-t border-slate-200 transition-all">
+            <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/90">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-teal-500"></span>
+                  <h4 class="text-sm font-bold text-slate-800" id="generatedRoutineTitle">Your Morning & Evening Blueprint</h4>
+                </div>
+                <button onclick="saveRoutineToLocal()" class="text-xs text-sky-700 hover:text-sky-900 font-semibold flex items-center gap-1">
+                  <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
+                  <span>Pin to Habit Drawer</span>
+                </button>
+              </div>
+
+              <!-- Protocols Container -->
+              <div class="grid sm:grid-cols-2 gap-4 text-xs" id="routineTasksList">
+                <!-- Dynamic Items Inserted via JS -->
+              </div>
+
+              <div class="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
+                <span>Rule #1: Be patient. Skin turnover and posture adaptations take 4–6 weeks.</span>
+                <span class="text-sky-600 font-medium">Sustainable & Safe</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Curated Guides & Tips Grid -->
+    <section id="guides" class="py-16 md:py-24 bg-aura-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-teal-600">The Knowledge Base</span>
+            <h3 class="text-3xl font-bold text-slate-900 tracking-tight mt-1">Deep-Dive Actionable Guides</h3>
+          </div>
+
+          <!-- Category filter buttons -->
+          <div class="flex flex-wrap items-center gap-2" id="guideFilterBar">
+            <button onclick="filterGuideCards('all', this)" class="guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white transition-all">All</button>
+            <button onclick="filterGuideCards('skincare', this)" class="guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all">Skincare</button>
+            <button onclick="filterGuideCards('posture', this)" class="guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all">Posture</button>
+            <button onclick="filterGuideCards('grooming', this)" class="guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all">Grooming</button>
+            <button onclick="filterGuideCards('confidence', this)" class="guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all">Confidence</button>
+          </div>
+        </div>
+
+        <!-- Guides Grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="guidesGrid">
+          
+          <!-- Guide 1 -->
+          <div class="guide-card glass-card rounded-3xl overflow-hidden shadow-soft border border-slate-200/80 flex flex-col justify-between" data-category="skincare">
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="font-semibold text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-100">Skincare Protocol</span>
+                <span>4 min read</span>
+              </div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug">The De-Puff Protocol: Eliminating Water Retention & Dark Circles</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Why face bloating happens: potassium deficiency, mouth-breathing during sleep, and lymph stagnation. Fix it with a 3-minute morning lymphatic sweep.
+              </p>
+            </div>
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100">
+              <button onclick="openReadingModal('depuff')" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
+                Read Guide <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleBookmark(this)" class="text-slate-400 hover:text-sky-600 transition-colors p-1" title="Save article">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Guide 2 -->
+          <div class="guide-card glass-card rounded-3xl overflow-hidden shadow-soft border border-slate-200/80 flex flex-col justify-between" data-category="posture">
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="font-semibold text-teal-600 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-100">Posture & Poise</span>
+                <span>5 min read</span>
+              </div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug">Fixing "Tech Neck" & Forward Slump in 21 Days</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Realign your cervical spine and engage your deep cervical flexors. Improved neck posture immediately sharpens the jawline profile and commands presence.
+              </p>
+            </div>
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100">
+              <button onclick="openReadingModal('posture')" class="text-xs font-bold text-teal-700 hover:text-teal-900 flex items-center gap-1">
+                Read Guide <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleBookmark(this)" class="text-slate-400 hover:text-teal-600 transition-colors p-1" title="Save article">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Guide 3 -->
+          <div class="guide-card glass-card rounded-3xl overflow-hidden shadow-soft border border-slate-200/80 flex flex-col justify-between" data-category="grooming">
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="font-semibold text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">Hair & Grooming</span>
+                <span>3 min read</span>
+              </div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug">Scalp Chemistry: The High-Yield Hair Density Guide</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Why gentle clarifying shampoos and nightly silicone-tip scalp massages stimulate hair folicles without toxic miracle serums.
+              </p>
+            </div>
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100">
+              <button onclick="openReadingModal('hair')" class="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1">
+                Read Guide <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleBookmark(this)" class="text-slate-400 hover:text-purple-600 transition-colors p-1" title="Save article">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Guide 4 -->
+          <div class="guide-card glass-card rounded-3xl overflow-hidden shadow-soft border border-slate-200/80 flex flex-col justify-between" data-category="confidence">
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">Confidence</span>
+                <span>6 min read</span>
+              </div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug">Vocal Resonance & Eliminating Physical Nervous Fidgets</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                How to drop vocal projection into the diaphragm, soften your eyelid tension, and become comfortable holding quiet pauses in conversation.
+              </p>
+            </div>
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100">
+              <button onclick="openReadingModal('confidence')" class="text-xs font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-1">
+                Read Guide <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleBookmark(this)" class="text-slate-400 hover:text-indigo-600 transition-colors p-1" title="Save article">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Guide 5 -->
+          <div class="guide-card glass-card rounded-3xl overflow-hidden shadow-soft border border-slate-200/80 flex flex-col justify-between" data-category="skincare">
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="font-semibold text-sky-600 bg-sky-50 px-2.5 py-0.5 rounded-full border border-sky-100">Barrier Health</span>
+                <span>4 min read</span>
+              </div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug">The 3-Ingredient Minimalist Skincare Foundation</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Cleanser, ceramide moisturizer, and SPF 50. Why stripping down your shelf clears 80% of adult breakouts caused by product overload.
+              </p>
+            </div>
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100">
+              <button onclick="openReadingModal('minimalist-skin')" class="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1">
+                Read Guide <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleBookmark(this)" class="text-slate-400 hover:text-sky-600 transition-colors p-1" title="Save article">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Guide 6 -->
+          <div class="guide-card glass-card rounded-3xl overflow-hidden shadow-soft border border-slate-200/80 flex flex-col justify-between" data-category="grooming">
+            <div class="p-6">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="font-semibold text-purple-600 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">Signature Style</span>
+                <span>3 min read</span>
+              </div>
+              <h4 class="text-lg font-bold text-slate-800 mb-2 leading-snug">The Subtle Fragrance Architecture: Clean Scent Notes</h4>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                Avoid abrasive chemical colognes. How to layer neutral vetiver, white musk, or neroli waters for an intimate, lingering freshness.
+              </p>
+            </div>
+            <div class="px-6 pb-6 pt-2 flex items-center justify-between border-t border-slate-100">
+              <button onclick="openReadingModal('fragrance')" class="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1">
+                Read Guide <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="toggleBookmark(this)" class="text-slate-400 hover:text-purple-600 transition-colors p-1" title="Save article">
+                <i data-lucide="bookmark" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mindful Transformations & Journey Stories -->
+    <section id="stories" class="py-16 md:py-24 bg-white border-b border-slate-200/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <span class="text-xs font-bold uppercase tracking-wider text-sky-600">Real Journeys</span>
+          <h3 class="text-3xl font-bold text-slate-900 tracking-tight mt-1">Grounded Progress, No Gimmicks</h3>
+          <p class="text-slate-600 text-sm mt-2">
+            Read how small, respectful daily rituals transformed skin texture, posture, and inner calm over months.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          
+          <!-- Story 1 -->
+          <div class="p-6 rounded-3xl bg-aura-50 border border-slate-200/80 shadow-soft-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-sky-400 to-teal-300 flex items-center justify-center text-white font-bold text-sm">
+                  EK
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Ethan K.</h4>
+                  <p class="text-[11px] text-slate-400">Software Engineer • 4 Months In</p>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed italic mb-5">
+                "I used to obsess over hyper-masculine looksmax forums that made me feel terrible. Switching to Aura's 2-minute posture resets and barrier repair serum restored both my complexion and my peace of mind."
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-3 border-t border-slate-200/60 text-[10px] font-medium">
+              <span class="px-2.5 py-1 bg-white rounded-full text-slate-600 border border-slate-200">Chin Tucks</span>
+              <span class="px-2.5 py-1 bg-white rounded-full text-slate-600 border border-slate-200">Ceramide Barrier</span>
+              <span class="px-2.5 py-1 bg-teal-50 text-teal-700 rounded-full border border-teal-200">Reduced Face Redness</span>
+            </div>
+          </div>
+
+          <!-- Story 2 -->
+          <div class="p-6 rounded-3xl bg-aura-50 border border-slate-200/80 shadow-soft-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-purple-400 to-indigo-300 flex items-center justify-center text-white font-bold text-sm">
+                  ML
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Marcus L.</h4>
+                  <p class="text-[11px] text-slate-400">Product Designer • 6 Months In</p>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed italic mb-5">
+                "Posture realignment and nose-breathing sleep tape changed my jaw definition more than any extreme chewing gimmick ever could. People now tell me I look centered and alert."
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-3 border-t border-slate-200/60 text-[10px] font-medium">
+              <span class="px-2.5 py-1 bg-white rounded-full text-slate-600 border border-slate-200">Thoracic Mobility</span>
+              <span class="px-2.5 py-1 bg-white rounded-full text-slate-600 border border-slate-200">Gua Sha Drainage</span>
+              <span class="px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200">Defined Jawline</span>
+            </div>
+          </div>
+
+          <!-- Story 3 -->
+          <div class="p-6 rounded-3xl bg-aura-50 border border-slate-200/80 shadow-soft-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-teal-400 to-sky-400 flex items-center justify-center text-white font-bold text-sm">
+                  SR
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-800">Siddharth R.</h4>
+                  <p class="text-[11px] text-slate-400">Consultant • 3 Months In</p>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed italic mb-5">
+                "The vocal grounding exercise and tailored wardrobe rule gave me an immediate boost in client meetings. Self-improvement feels empowering when it’s rooted in self-respect."
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-1.5 pt-3 border-t border-slate-200/60 text-[10px] font-medium">
+              <span class="px-2.5 py-1 bg-white rounded-full text-slate-600 border border-slate-200">Vocal Diaphragm</span>
+              <span class="px-2.5 py-1 bg-white rounded-full text-slate-600 border border-slate-200">Minimalist Wardrobe</span>
+              <span class="px-2.5 py-1 bg-sky-50 text-sky-700 rounded-full border border-sky-200">Presence</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Mindful Weekly Newsletter -->
+    <section class="py-16 bg-aura-50">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="glass-card p-8 sm:p-12 rounded-3xl shadow-soft border border-slate-200 text-center relative overflow-hidden">
+          
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-400 to-indigo-400 text-white flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <i data-lucide="mail" class="w-6 h-6"></i>
+          </div>
+
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">The Gentle Sunday Dispatch</h3>
+          <p class="text-slate-600 text-sm max-w-lg mx-auto mt-2">
+            Every Sunday, receive 1 grooming tip, 1 posture correction cue, and 1 quiet mindset reflection. Zero spam, zero artificial panic.
+          </p>
+
+          <form id="newsletterForm" onsubmit="handleNewsletterSubmit(event)" class="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <input 
+              type="email" 
+              id="newsletterEmail" 
+              required 
+              placeholder="Enter your email address" 
+              class="flex-1 px-4 py-3 rounded-full bg-white border border-slate-200 focus:outline-none focus:ring-2 focus:ring-sky-400 text-sm text-slate-800 placeholder-slate-400 shadow-soft-inner"
+            >
+            <button type="submit" class="btn-gradient text-white font-semibold px-6 py-3 rounded-full text-sm shadow-soft">
+              Join 14,000+
+            </button>
+          </form>
+
+          <p class="text-[11px] text-slate-400 mt-3">Unsubscribe anytime with 1 tap. We value your digital calm.</p>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Daily Routine Drawer / Habit Tracker Modal -->
+  <div id="routineDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div class="absolute inset-0 bg-slate-900/30 backdrop-blur-sm transition-opacity" onclick="toggleRoutineDrawer()"></div>
+
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+      <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+        
+        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h3 class="text-base font-bold text-slate-800" id="slide-over-title">Today's Aura Routine</h3>
+              <p class="text-xs text-slate-400">Micro-habits for continuous poise</p>
+            </div>
+          </div>
+          <button onclick="toggleRoutineDrawer()" class="p-1 rounded-lg text-slate-400 hover:text-slate-700">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="p-6 overflow-y-auto space-y-4 flex-1" id="drawerHabitList">
+          <div class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-2">Morning Essentials</div>
+          
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-sky-50/50 transition-colors">
+            <input type="checkbox" class="w-4 h-4 mt-0.5 text-sky-600 rounded border-slate-300 drawer-chk" onchange="updateDrawerStats()">
+            <div>
+              <div class="text-xs font-bold text-slate-800">500ml Hydration + Electrolytes</div>
+              <div class="text-[11px] text-slate-500">Stimulates intestinal motility and flushes overnight fluid buildup.</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-sky-50/50 transition-colors">
+            <input type="checkbox" class="w-4 h-4 mt-0.5 text-sky-600 rounded border-slate-300 drawer-chk" onchange="updateDrawerStats()">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Cervical Wall Retraction (10 reps)</div>
+              <div class="text-[11px] text-slate-500">Frees pinched nerves and rests head center of gravity over spine.</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-sky-50/50 transition-colors">
+            <input type="checkbox" class="w-4 h-4 mt-0.5 text-sky-600 rounded border-slate-300 drawer-chk" onchange="updateDrawerStats()">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Mineral SPF 50 Application</div>
+              <div class="text-[11px] text-slate-500">The single highest return anti-aging habit in dermatology.</div>
+            </div>
+          </label>
+
+          <div class="text-xs text-slate-500 font-semibold uppercase tracking-wider mt-6 mb-2">Evening Winddown</div>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-sky-50/50 transition-colors">
+            <input type="checkbox" class="w-4 h-4 mt-0.5 text-sky-600 rounded border-slate-300 drawer-chk" onchange="updateDrawerStats()">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Gentle Scalp Massage (3 Mins)</div>
+              <div class="text-[11px] text-slate-500">Releases galea aponeurotica tension and boosts folicular blood flow.</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3.5 rounded-2xl bg-slate-50 border border-slate-100 cursor-pointer hover:bg-sky-50/50 transition-colors">
+            <input type="checkbox" class="w-4 h-4 mt-0.5 text-sky-600 rounded border-slate-300 drawer-chk" onchange="updateDrawerStats()">
+            <div>
+              <div class="text-xs font-bold text-slate-800">Phone Docked Outside Bedroom</div>
+              <div class="text-[11px] text-slate-500">Preserves sleep architecture and avoids blue-light circadian delay.</div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-6 bg-slate-50 border-t border-slate-100">
+          <div class="flex items-center justify-between text-xs font-semibold text-slate-700 mb-2">
+            <span>Completed Today</span>
+            <span id="drawerProgressText">0 of 5</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-200 overflow-hidden mb-4">
+            <div id="drawerProgressBar" class="h-full bg-gradient-to-r from-teal-400 to-sky-500 rounded-full w-0 transition-all duration-300"></div>
+          </div>
+          <button onclick="resetDrawerHabits()" class="w-full py-2.5 rounded-xl border border-slate-200 text-xs font-medium text-slate-600 hover:bg-white transition-colors">
+            Reset Checklist for Tomorrow
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Reading Modal -->
+  <div id="readingModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-modal="true">
+    <div class="min-h-screen px-4 text-center flex items-center justify-center">
+      <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onclick="closeReadingModal()"></div>
+
+      <div class="inline-block w-full max-w-2xl p-6 sm:p-8 my-8 text-left bg-white rounded-3xl shadow-2xl relative z-10 border border-slate-100">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <span id="modalCategoryBadge" class="text-xs font-bold text-sky-600 bg-sky-50 px-3 py-1 rounded-full">Protocol</span>
+          <button onclick="closeReadingModal()" class="text-slate-400 hover:text-slate-600 p-1">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div class="mt-4">
+          <h3 id="modalTitle" class="text-2xl font-bold text-slate-900 mb-3">Protocol Title</h3>
+          <div id="modalBody" class="prose prose-sm text-slate-600 space-y-3 leading-relaxed text-xs sm:text-sm">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+          <span class="text-[11px] text-slate-400">Verified by Aura Grooming Research</span>
+          <button onclick="closeReadingModal()" class="px-5 py-2 rounded-full bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors">
+            Done Reading
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Subtle Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 pointer-events-none"></div>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200/80 pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        
+        <div class="md:col-span-1 space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-400 via-teal-400 to-indigo-400 flex items-center justify-center text-white">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+            </div>
+            <span class="text-lg font-bold text-slate-800">Aura</span>
+          </div>
+          <p class="text-xs text-slate-500 leading-relaxed">
+            The mindful standard for male self-improvement and healthy looksmaxing. Science, calmness, and posture over neuroticism.
+          </p>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Core Pillars</h5>
+          <ul class="space-y-2 text-xs text-slate-500">
+            <li><a href="#categories" class="hover:text-sky-600 transition-colors">Skin Barrier Science</a></li>
+            <li><a href="#categories" class="hover:text-sky-600 transition-colors">Thoracic Alignment</a></li>
+            <li><a href="#categories" class="hover:text-sky-600 transition-colors">Facial Framing & Hair</a></li>
+            <li><a href="#categories" class="hover:text-sky-600 transition-colors">Anti-Bloating Nutrition</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Resources</h5>
+          <ul class="space-y-2 text-xs text-slate-500">
+            <li><a href="#builder" class="hover:text-sky-600 transition-colors">Daily Routine Builder</a></li>
+            <li><a href="#guides" class="hover:text-sky-600 transition-colors">Actionable Library</a></li>
+            <li><a href="#stories" class="hover:text-sky-600 transition-colors">Progress Spotlights</a></li>
+            <li><a href="#philosophy" class="hover:text-sky-600 transition-colors">Safety Manifesto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3">Community Vibe</h5>
+          <p class="text-xs text-slate-500 mb-3">Curated discussions around self-mastery, healthy aesthetics, and grounded confidence.</p>
+          <div class="flex gap-3 text-slate-400">
+            <span class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-sky-600 cursor-pointer transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></span>
+            <span class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-sky-600 cursor-pointer transition-colors"><i data-lucide="instagram" class="w-4 h-4"></i></span>
+            <span class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center hover:text-sky-600 cursor-pointer transition-colors"><i data-lucide="bookmark" class="w-4 h-4"></i></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+        <div>&copy; <span id="currentYear"></span> Aura Self-Improvement. Designed for wellbeing, confidence & poise.</div>
+        <div class="flex gap-6">
+          <a href="#" class="hover:underline">Privacy Philosophy</a>
+          <a href="#" class="hover:underline">Evidence-Based Guidelines</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide icons on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      document.getElementById('currentYear').innerText = new Date().getFullYear();
+      generateCustomRoutine(); // Initial pre-population
+      updateDrawerStats();
+    });
+
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    // Interactive routine drawer toggle
+    function toggleRoutineDrawer() {
+      const drawer = document.getElementById('routineDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    // Hero progress check
+    function updateHeroProgress() {
+      const checkboxes = document.querySelectorAll('#heroHabitList input[type="checkbox"]');
+      const total = checkboxes.length;
+      let checked = 0;
+      checkboxes.forEach(c => { if(c.checked) checked++; });
+      const percent = Math.round((checked / total) * 100);
+      document.getElementById('heroProgressBar').style.width = percent + '%';
+      document.getElementById('heroProgressPercent').innerText = percent + '%';
+    }
+
+    // Drawer progress calculation
+    function updateDrawerStats() {
+      const drawerChecks = document.querySelectorAll('.drawer-chk');
+      const total = drawerChecks.length;
+      let checked = 0;
+      drawerChecks.forEach(c => { if(c.checked) checked++; });
+      
+      const percent = Math.round((checked / total) * 100);
+      document.getElementById('drawerProgressBar').style.width = percent + '%';
+      document.getElementById('drawerProgressText').innerText = `${checked} of ${total}`;
+      
+      const badge = document.getElementById('navHabitBadge');
+      if (badge) {
+        badge.innerText = `${checked}/${total}`;
+      }
+    }
+
+    function resetDrawerHabits() {
+      document.querySelectorAll('.drawer-chk').forEach(c => c.checked = false);
+      updateDrawerStats();
+      showToast("Habits reset for a fresh start tomorrow!");
+    }
+
+    // Interactive Routine Builder logic
+    const selectedGoals = new Set(['skin']);
+
+    function toggleOption(btn, goalId) {
+      if (selectedGoals.has(goalId)) {
+        if (selectedGoals.size > 1) { // keep at least 1
+          selectedGoals.delete(goalId);
+          btn.classList.remove('bg-sky-50/60', 'border-sky-300', 'text-sky-900', 'font-semibold');
+          btn.classList.add('bg-white', 'border-slate-200', 'text-slate-700');
+        }
+      } else {
+        if (selectedGoals.size < 3) {
+          selectedGoals.add(goalId);
+          btn.classList.add('bg-sky-50/60', 'border-sky-300', 'text-sky-900', 'font-semibold');
+          btn.classList.remove('bg-white', 'border-slate-200', 'text-slate-700');
+        } else {
+          showToast("You can pick up to 3 priority pillars.");
+        }
+      }
+      generateCustomRoutine();
+    }
+
+    const taskLibrary = {
+      skin: [
+        { title: "Morning Sunscreen Layer", desc: "SPF 50 broad spectrum applied before stepping outdoors.", time: "1m" },
+        { title: "PM Double Cleanse", desc: "Oil balm followed by mild amino-acid wash to strip urban pollution.", time: "2m" },
+        { title: "Ceramide Barrier Sealing", desc: "Apply heavy humectant on damp skin right after showering.", time: "1m" }
+      ],
+      posture: [
+        { title: "Doorframe Chest Stretch", desc: "90-degree elbows on frame to release tight pectorals.", time: "2m" },
+        { title: "Cervical Retractions", desc: "10 rhythmic chin tucks against a firm wall to realign skull center.", time: "2m" },
+        { title: "Pelvic Neutral Walk", desc: "Slight lower abdomen tuck while walking to remove anterior pelvic tilt.", time: "3m" }
+      ],
+      hair: [
+        { title: "Rosemary & Scalp Stimulation", desc: "Gentle finger-pad scalp massage to increase circulation.", time: "3m" },
+        { title: "Sulfate-Aware Wash Cycle", desc: "Wash every 2-3 days using lukewarm water, never boiling hot.", time: "4m" },
+        { title: "Clean Edge Trimming", desc: "Keep nape neckline and eyebrow unibrow stray hairs neat.", time: "2m" }
+      ],
+      depuff: [
+        { title: "Cold Water Facial Immersion", desc: "Splash cool water 15 times to constrict micro-capillaries.", time: "1m" },
+        { title: "Potassium Banana/Avocado Anchor", desc: "Balances cellular sodium balance to drain water retention.", time: "2m" },
+        { title: "Lymph Drainage Sweep", desc: "Gentle finger glide from ears down to collarbones 20 times.", time: "2m" }
+      ]
+    };
+
+    function generateCustomRoutine() {
+      const container = document.getElementById('routineTasksList');
+      container.innerHTML = '';
+      
+      let collectedTasks = [];
+      selectedGoals.forEach(goalKey => {
+        if (taskLibrary[goalKey]) {
+          collectedTasks.push(...taskLibrary[goalKey]);
+        }
+      });
+
+      // Show top 4 relevant tasks
+      const displayTasks = collectedTasks.slice(0, 4);
+
+      displayTasks.forEach(task => {
+        const div = document.createElement('div');
+        div.className = "p-3 rounded-xl bg-white border border-slate-200 shadow-sm flex items-start gap-2.5";
+        div.innerHTML = `
+          <div class="mt-0.5 text-teal-600"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
+          <div class="flex-1">
+            <div class="font-bold text-slate-800 flex items-center justify-between">
+              <span>${task.title}</span>
+              <span class="text-[10px] text-slate-400 font-normal">${task.time}</span>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5 leading-normal">${task.desc}</p>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      lucide.createIcons();
+    }
+
+    function saveRoutineToLocal() {
+      showToast("Personal protocol pinned to your daily drawer!");
+    }
+
+    // Guide Filtering
+    function filterGuideCards(category, btn) {
+      const buttons = document.querySelectorAll('.guide-filter-btn');
+      buttons.forEach(b => {
+        b.className = "guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-all";
+      });
+      btn.className = "guide-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold bg-slate-900 text-white transition-all";
+
+      const cards = document.querySelectorAll('.guide-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function quickFilterGuides(cat) {
+      const guidesElem = document.getElementById('guides');
+      guidesElem.scrollIntoView({ behavior: 'smooth' });
+      const matchingBtn = Array.from(document.querySelectorAll('.guide-filter-btn')).find(b => b.innerText.toLowerCase().includes(cat.substring(0, 4)));
+      if (matchingBtn) {
+        filterGuideCards(cat, matchingBtn);
+      }
+    }
+
+    // Modal Guide Articles Content
+    const guideArticles = {
+      depuff: {
+        title: "The De-Puff Protocol: Eliminating Water Retention & Dark Circles",
+        category: "Skincare Protocol",
+        content: `
+          <p><strong>1. Sodium vs. Potassium Osmoregulation:</strong> When late-night snacks are loaded with salt, cells retain extracellular water to dilute the sodium concentration. Replenish with coconut water, avocado, or potassium-rich greens.</p>
+          <p><strong>2. Downward Lymphatic Flushing:</strong> Lymph fluid does not have a heart pump; it relies on smooth muscle contractions and gravity. In the morning, use a smooth serum and swipe gently from below the earlobes straight down the sternocleidomastoid muscles to collarbones.</p>
+          <p><strong>3. Sleeping Incline:</strong> Keep your head elevated by an extra inch to prevent fluid pooling around delicate periorbital tissue.</p>
+        `
+      },
+      posture: {
+        title: "Fixing 'Tech Neck' & Forward Slump in 21 Days",
+        category: "Posture & Alignment",
+        content: `
+          <p><strong>The Mechanics:</strong> For every inch the head tilts forward, the load on the upper cervical spine increases by roughly 10 pounds. This creates compensatory neck bunching and a softer jawline appearance.</p>
+          <p><strong>Wall Chin Tucks:</strong> Stand with back against a wall. Tuck your chin gently straight back as if creating a mild double chin without tilting your nose downward. Hold for 5 seconds; repeat 10 times morning and evening.</p>
+          <p><strong>Shoulder External Rotation:</strong> Open palms facing forward while standing to encourage relaxed shoulder external rotation.</p>
+        `
+      },
+      hair: {
+        title: "Scalp Chemistry: The High-Yield Hair Density Guide",
+        category: "Hair & Grooming",
+        content: `
+          <p><strong>Root Care is Skin Care:</strong> The scalp is an extension of facial skin. Buildup of sebum and styling waxes suffocates follicular openings.</p>
+          <p><strong>Physical Stimulation:</strong> Spend 3 minutes every evening using soft silicone pads or your finger pads to gently move the scalp tissue against the cranium, reducing scalp tension.</p>
+          <p><strong>Gentle Temperature:</strong> Hot shower steam weakens keratin bonds. Finish every wash with lukewarm or cool water.</p>
+        `
+      },
+      confidence: {
+        title: "Vocal Resonance & Eliminating Physical Nervous Fidgets",
+        category: "Confidence & Poise",
+        content: `
+          <p><strong>Diaphragmatic Grounding:</strong> Nervous speech tends to sit in the throat or nasal cavity. Take slow breaths that expand the lower belly before responding.</p>
+          <p><strong>The Power of Stillness:</strong> High-presence individuals move with measured intention. Avoid repetitive foot tapping or adjusting clothing collar compulsively.</p>
+          <p><strong>Unbroken Soft Gaze:</strong> When someone finishes speaking, pause for a deliberate 1-second breath before answering. It communicates complete composure.</p>
+        `
+      },
+      'minimalist-skin': {
+        title: "The 3-Ingredient Minimalist Skincare Foundation",
+        category: "Barrier Health",
+        content: `
+          <p><strong>Over-Exfoliation Syndrome:</strong> 70% of redness and texture issues stem from using acid serums and harsh scrubs daily.</p>
+          <p><strong>The Core Trio:</strong> A pH-balanced gentle cleanser, a ceramide/hyaluronic moisturizer, and SPF 50 are all 90% of individuals need for healthy skin turnover.</p>
+        `
+      },
+      fragrance: {
+        title: "The Subtle Fragrance Architecture: Clean Scent Notes",
+        category: "Signature Style",
+        content: `
+          <p><strong>The Rule of Intimate Projection:</strong> A fragrance should be discovered, not announced. Avoid synthetic high-intensity sprays in closed rooms.</p>
+          <p><strong>Target Placement:</strong> 1 spray on the nape of the neck and 1 spray on the inner forearms after moisturizing creates subtle, lingering warmth.</p>
+        `
+      }
+    };
+
+    function openReadingModal(key) {
+      const data = guideArticles[key] || guideArticles.depuff;
+      document.getElementById('modalTitle').innerText = data.title;
+      document.getElementById('modalCategoryBadge').innerText = data.category;
+      document.getElementById('modalBody').innerHTML = data.content;
+      document.getElementById('readingModal').classList.remove('hidden');
+    }
+
+    function closeReadingModal() {
+      document.getElementById('readingModal').classList.add('hidden');
+    }
+
+    // Bookmark toggle feedback
+    function toggleBookmark(btn) {
+      const icon = btn.querySelector('svg');
+      if (btn.classList.contains('text-sky-600')) {
+        btn.classList.remove('text-sky-600');
+        btn.classList.add('text-slate-400');
+        showToast("Article removed from bookmarks.");
+      } else {
+        btn.classList.add('text-sky-600');
+        btn.classList.remove('text-slate-400');
+        showToast("Article saved to your private library!");
+      }
+    }
+
+    // Newsletter submit simulation
+    function handleNewsletterSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletterEmail').value;
+      if (email) {
+        showToast(`Welcome! The Sunday Dispatch will arrive for ${email}.`);
+        document.getElementById('newsletterEmail').value = '';
+      }
+    }
+
+    // Non-intrusive Toast component
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = "toast-animate bg-slate-900/90 text-white text-xs px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 mb-2 pointer-events-auto backdrop-blur-sm border border-slate-700";
+      toast.innerHTML = `
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-teal-400"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+  </script>
+</body>
+</html>
